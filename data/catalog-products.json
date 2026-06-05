@@ -1,0 +1,99 @@
+{
+  "categories": [
+    {
+      "name": "Wax Sachets",
+      "slug": "wax-sachets",
+      "description": "Handcrafted wax sachets designed for wardrobes, drawers, cars, gym bags, bedside areas, and other closed spaces.",
+      "sort_order": 1
+    },
+    {
+      "name": "Candles",
+      "slug": "candles",
+      "description": "Hand-poured candles crafted for a slow, clean, aesthetic burn with premium fragrance blends.",
+      "sort_order": 2
+    }
+  ],
+  "products": [
+    {
+      "name": "Simple Sachet",
+      "slug": "simple-sachet",
+      "description": "Simple wax sachet with artificial embedded flowers. Available in any fragrance or shape.",
+      "price": "₹200",
+      "category_slug": "wax-sachets",
+      "is_featured": true,
+      "sort_order": 1
+    },
+    {
+      "name": "Colour Wax Sachet with Embedded Flowers",
+      "slug": "colour-wax-sachet-embedded-flowers",
+      "description": "Colour wax sachet with artificial embedded flowers. Available in any fragrance, shape, or colour.",
+      "price": "₹220",
+      "category_slug": "wax-sachets",
+      "is_featured": true,
+      "sort_order": 2
+    },
+    {
+      "name": "Colour Wax Sachet with Wax Embedded Design",
+      "slug": "colour-wax-sachet-wax-embedded-design",
+      "description": "Colour wax sachet with wax embedded design. Available in any fragrance, shape, or colour.",
+      "price": "₹240",
+      "category_slug": "wax-sachets",
+      "is_featured": false,
+      "sort_order": 3
+    },
+    {
+      "name": "Premium Colour Wax Sachet",
+      "slug": "premium-colour-wax-sachet",
+      "description": "Premium colour wax sachet with wax embedded design. Available in any fragrance, shape, or colour.",
+      "price": "₹260",
+      "category_slug": "wax-sachets",
+      "is_featured": false,
+      "sort_order": 4
+    },
+    {
+      "name": "Sunshine Bouquet",
+      "slug": "sunshine-bouquet",
+      "description": "Handcrafted mini sunflower bouquet, perfect for small and meaningful gifting. Available in any fragrance.",
+      "price": "₹199",
+      "category_slug": "candles",
+      "is_featured": true,
+      "sort_order": 5
+    },
+    {
+      "name": "Brewed Bliss",
+      "slug": "brewed-bliss",
+      "description": "Iced coffee themed candle, 200 ml. Fragrance: Coffee Latte. Burn time: 18-20 hrs. A rich, cozy candle inspired by iced coffee and crafted for a warm cafe-like mood.",
+      "price": "₹799",
+      "category_slug": "candles",
+      "is_featured": true,
+      "sort_order": 6
+    },
+    {
+      "name": "Sunkissed Shore",
+      "slug": "sunkissed-shore",
+      "description": "Beach themed candle, 200 ml. Fragrance: Sea Breeze. Burn time: 16-18 hrs. Designed to bring a fresh, relaxing ocean-inspired ambience into your space.",
+      "price": "₹799",
+      "category_slug": "candles",
+      "is_featured": true,
+      "sort_order": 7
+    },
+    {
+      "name": "Lavender Bloom",
+      "slug": "lavender-bloom",
+      "description": "Calm moments in a jar, 200 ml. Burn time: 16-18 hrs. A lavender-inspired candle for self-care, evenings, gifting, and a luxurious decor accent.",
+      "price": "₹799",
+      "category_slug": "candles",
+      "is_featured": false,
+      "sort_order": 8
+    },
+    {
+      "name": "The Arch Aura",
+      "slug": "the-arch-aura",
+      "description": "The Sculpted Silhouette candle. Burn time: 20-24 hrs. Available in any fragrance. A sculptural candle designed to create a sophisticated and calming ambience.",
+      "price": "₹399",
+      "category_slug": "candles",
+      "is_featured": false,
+      "sort_order": 9
+    }
+  ]
+}
