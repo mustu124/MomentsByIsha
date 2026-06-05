@@ -72,54 +72,64 @@ export function ProductForm({ product }: { product?: Product | null }) {
 
   async function uploadFile(file: File) {
     if (!supabase) return;
-    const extension = file.name.split(".").pop()?.toLowerCase() || "";
-    if (["heic", "heif"].includes(extension)) {
-      setNotice("Please convert HEIC images to WebP or JPG before uploading.");
+    const sessionResult = await supabase.auth.getSession();
+    const accessToken = sessionResult.data.session?.access_token;
+    if (!accessToken) {
+      setNotice("Please log in again.");
       return "";
     }
 
-    const safeName = slugify(file.name.replace(/\.[^.]+$/, "")) || "product-image";
-    const path = `products/${Date.now()}-${safeName}.${extension}`;
-    const { error } = await supabase.storage.from("product-images").upload(path, file, {
-      cacheControl: "3600",
-      upsert: false,
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "products");
+
+    const response = await fetch("/api/admin/uploads", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: formData,
     });
+    const result = await response.json();
 
-    if (error) {
-      setNotice(error.message);
+    if (!response.ok) {
+      setNotice(result.error || "Image upload failed. Please try again.");
       return "";
     }
 
-    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
-    return data.publicUrl;
+    return result.publicUrl || "";
   }
 
   async function uploadMainImage(file: File) {
     setIsUploading(true);
-    setNotice("");
-    const publicUrl = await uploadFile(file);
-    setIsUploading(false);
-    if (publicUrl) {
-      update("image_url", publicUrl);
-      setNotice("Image selected. Click Save product to publish this change.");
+    setNotice("Uploading image...");
+    try {
+      const publicUrl = await uploadFile(file);
+      if (publicUrl) {
+        update("image_url", publicUrl);
+        setNotice("Image uploaded. Click Save product to publish this change.");
+      }
+    } finally {
+      setIsUploading(false);
     }
   }
 
   async function uploadGalleryImages(files: FileList | null) {
     if (!files?.length) return;
     setIsUploading(true);
-    setNotice("");
+    setNotice("Uploading gallery images...");
 
     const uploadedUrls: string[] = [];
-    for (const file of Array.from(files)) {
-      const publicUrl = await uploadFile(file);
-      if (publicUrl) uploadedUrls.push(publicUrl);
-    }
+    try {
+      for (const file of Array.from(files)) {
+        const publicUrl = await uploadFile(file);
+        if (publicUrl) uploadedUrls.push(publicUrl);
+      }
 
-    setIsUploading(false);
-    if (uploadedUrls.length) {
-      update("gallery_images", [...draft.gallery_images, ...uploadedUrls]);
-      setNotice(`${uploadedUrls.length} gallery image${uploadedUrls.length === 1 ? "" : "s"} selected. Click Save product to publish.`);
+      if (uploadedUrls.length) {
+        update("gallery_images", [...draft.gallery_images, ...uploadedUrls]);
+        setNotice(`${uploadedUrls.length} gallery image${uploadedUrls.length === 1 ? "" : "s"} uploaded. Click Save product to publish.`);
+      }
+    } finally {
+      setIsUploading(false);
     }
   }
 
@@ -263,7 +273,16 @@ export function ProductForm({ product }: { product?: Product | null }) {
           <label className="mt-5 flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-ink/20 bg-[#f7f1ea] px-5 py-4 text-base">
             <Upload size={18} />
             {isUploading ? "Uploading..." : "Upload image"}
-            <input className="hidden" type="file" accept="image/webp,image/jpeg,image/png" onChange={(event) => event.target.files?.[0] && uploadMainImage(event.target.files[0])} />
+            <input
+              className="hidden"
+              type="file"
+              accept="image/*,.webp,.jpg,.jpeg,.png,.heic,.heif"
+              onChange={(event) => {
+                const file = event.currentTarget.files?.[0];
+                event.currentTarget.value = "";
+                if (file) uploadMainImage(file);
+              }}
+            />
           </label>
         </section>
 
@@ -273,7 +292,17 @@ export function ProductForm({ product }: { product?: Product | null }) {
           <label className="mt-5 flex cursor-pointer items-center justify-center gap-2 rounded-md border border-dashed border-ink/20 bg-[#f7f1ea] px-5 py-4 text-base">
             <ImagePlus size={18} />
             {isUploading ? "Uploading..." : "Upload gallery images"}
-            <input className="hidden" multiple type="file" accept="image/webp,image/jpeg,image/png" onChange={(event) => uploadGalleryImages(event.target.files)} />
+            <input
+              className="hidden"
+              multiple
+              type="file"
+              accept="image/*,.webp,.jpg,.jpeg,.png,.heic,.heif"
+              onChange={(event) => {
+                const files = event.currentTarget.files;
+                uploadGalleryImages(files);
+                event.currentTarget.value = "";
+              }}
+            />
           </label>
           {draft.gallery_images.length ? (
             <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-2">
