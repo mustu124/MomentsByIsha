@@ -2,8 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Menu, Search, ShoppingBag, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
+
+const primaryMenuLinks = [
+  { label: "New & Trending", href: "/catalogue" },
+  { label: "Gift Hampers", href: "/#gifting" },
+  { label: "Wedding Favours", href: "/#gifting" },
+  { label: "Corporate Gifting", href: "/#gifting" },
+  { label: "Custom Hampers", href: "/#gifting" },
+  { label: "Candles & Home", href: "/catalogue" },
+];
+
+const secondaryMenuLinks = [
+  { label: "About Moments By Isha", href: "/about" },
+  { label: "Contact", href: "/#contact" },
+  { label: "Shop Signature Edit", href: "/catalogue" },
+];
 
 export function SiteHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,6 +45,11 @@ export function SiteHeader() {
     event.preventDefault();
     const query = searchTerm.trim();
     window.location.href = query ? `/catalogue?q=${encodeURIComponent(query)}` : "/catalogue";
+  }
+
+  function submitMenuSearch(event: React.FormEvent<HTMLFormElement>) {
+    submitSearch(event);
+    closeMenu();
   }
 
   function closeMenu() {
@@ -59,7 +79,7 @@ export function SiteHeader() {
 
         <nav className="luxury-container flex min-h-[78px] items-center justify-between gap-3 py-3 sm:min-h-[104px] lg:gap-6">
           <Link href="/" className="group flex min-w-0 flex-1 items-center gap-2.5 sm:gap-4" aria-label="Moments By Isha home">
-            <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[#efe1d2] shadow-[0_10px_28px_rgba(42,27,18,0.12)] sm:h-20 sm:w-20 lg:h-24 lg:w-24">
+            <span className="relative h-12 w-12 shrink-0 overflow-hidden sm:h-20 sm:w-20 lg:h-24 lg:w-24">
               <Image
                 src="/brand/moments-by-isha-logo.png"
                 alt="Moments By Isha logo"
@@ -136,73 +156,79 @@ export function SiteHeader() {
 
       {isMenuOpen ? (
         <div id="site-menu" className="fixed inset-0 z-[999] overflow-y-auto bg-[#fffaf4] text-[#2a1b12]" role="dialog" aria-modal="true" aria-label="Site menu">
-          <div className="luxury-shine pointer-events-none absolute inset-0 opacity-40" />
-          <div className="luxury-container relative py-5 sm:py-7">
-            <div className="flex items-center justify-between gap-4 border-b border-[#2a1b12]/10 pb-5">
-              <Link onClick={closeMenu} href="/" className="flex items-center gap-3" aria-label="Moments By Isha home">
-                <span className="relative h-14 w-14 overflow-hidden rounded-full bg-[#efe1d2]">
-                  <Image src="/brand/moments-by-isha-logo.png" alt="Moments By Isha logo" fill sizes="56px" className="object-cover" />
-                </span>
-                <span>
-                  <span className="serif-title block text-3xl font-black italic leading-none text-[#5f3f23]">Moments</span>
-                  <span className="mt-1 block text-xs uppercase tracking-[0.28em] text-[#7f5c38]">By Isha</span>
-                </span>
-              </Link>
+          <div className="pointer-events-none fixed inset-y-0 right-0 w-px bg-[#2a1b12]/10" />
+          <div className="mx-auto min-h-screen w-full max-w-[1120px] px-6 pb-8 pt-4 sm:px-10 sm:pb-12 sm:pt-6 lg:px-14">
+            <div className="grid min-h-14 grid-cols-[2.5rem_1fr_5.25rem] items-center gap-3 border-b border-[#2a1b12]/10 pb-3 sm:min-h-20 sm:grid-cols-[3.75rem_1fr_7rem] sm:gap-4 sm:pb-5">
               <button
                 type="button"
                 onClick={closeMenu}
-                className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#2a1b12]/12 bg-white text-[#2a1b12] shadow-[0_10px_24px_rgba(42,27,18,0.08)]"
+                className="inline-flex h-9 w-9 items-center justify-center text-[#2a1b12] transition hover:text-[#8d613a] sm:h-12 sm:w-12"
                 aria-label="Close menu"
               >
-                <X className="h-6 w-6" strokeWidth={1.5} />
+                <X className="h-6 w-6 sm:h-9 sm:w-9" strokeWidth={1.45} />
               </button>
+
+              <Link onClick={closeMenu} href="/" className="justify-self-center text-center leading-none" aria-label="Moments By Isha home">
+                <span className="serif-title block text-[clamp(1.8rem,6.3vw,3.6rem)] font-semibold italic text-[#5f3f23]">
+                  Moments
+                </span>
+                <span className="mt-0.5 block font-serif text-[clamp(0.58rem,1.55vw,1rem)] uppercase tracking-[0.22em] text-[#7f5c38]">
+                  By Isha
+                </span>
+              </Link>
+
+              <div className="flex items-center justify-end gap-2 text-[#2a1b12] sm:gap-4">
+                <Link onClick={closeMenu} href="/admin/login" className="inline-flex h-8 w-8 items-center justify-center transition hover:text-[#8d613a] sm:h-10 sm:w-10" aria-label="Admin Login">
+                  <User className="h-5 w-5 sm:h-7 sm:w-7" strokeWidth={1.45} />
+                </Link>
+                <Link onClick={closeMenu} href="/catalogue" className="inline-flex h-8 w-8 items-center justify-center transition hover:text-[#8d613a] sm:h-10 sm:w-10" aria-label="Open Catalogue">
+                  <ShoppingBag className="h-5 w-5 sm:h-7 sm:w-7" strokeWidth={1.45} />
+                </Link>
+              </div>
             </div>
 
-            <div className="grid gap-8 py-8 sm:py-10 lg:grid-cols-[1fr_0.72fr] lg:gap-14">
-              <div className="luxury-reveal">
-                <p className="mb-5 text-xs uppercase tracking-[0.24em] text-[#8d613a]">Explore</p>
-                <nav className="grid gap-3 text-[clamp(2.4rem,7vw,6.8rem)] leading-[0.88]">
-                  <Link onClick={closeMenu} className="menu-link" href="/catalogue">
-                    All Products
-                  </Link>
-                  <Link onClick={closeMenu} className="menu-link" href="/#gifting">
-                    Gift Hampers
-                  </Link>
-                  <Link onClick={closeMenu} className="menu-link" href="/#gifting">
-                    Wedding Favours
-                  </Link>
-                  <Link onClick={closeMenu} className="menu-link" href="/#gifting">
-                    Corporate Gifting
-                  </Link>
-                  <Link onClick={closeMenu} className="menu-link" href="/about">
-                    About Isha
-                  </Link>
-                </nav>
-              </div>
+            <form onSubmit={submitMenuSearch} className="mt-4 flex min-h-12 items-center gap-3 border border-[#2a1b12]/14 bg-white/54 px-4 shadow-[0_10px_24px_rgba(42,27,18,0.04)] sm:mt-7 sm:min-h-16 sm:gap-4 sm:px-7">
+              <Search className="h-5 w-5 shrink-0 text-[#2a1b12] sm:h-7 sm:w-7" strokeWidth={1.45} />
+              <input
+                autoFocus
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder="Search For A Scent"
+                className="min-w-0 flex-1 border-0 bg-transparent text-base text-[#2a1b12] outline-none placeholder:text-[#2a1b12]/48 sm:text-2xl"
+              />
+            </form>
 
-              <div className="luxury-card bg-[#ead4bd] p-5 sm:p-7">
-                <p className="text-xs uppercase tracking-[0.24em] text-[#8d613a]">Gifting Concierge</p>
-                <h2 className="serif-title mt-4 text-4xl font-semibold leading-none sm:text-5xl">
-                  Candles, Hampers, And Favours Made For Beautiful Memories.
-                </h2>
-                <div className="mt-7 grid gap-4 text-lg sm:text-xl">
-                  <Link onClick={closeMenu} className="menu-link-small" href="/#contact">
-                    Contact
-                  </Link>
-                  <Link onClick={closeMenu} className="menu-link-small" href="/about">
-                    Brand Story
-                  </Link>
-                  <Link onClick={closeMenu} className="menu-link-small" href="/catalogue">
-                    New Collection
-                  </Link>
-                </div>
-                <div className="mt-8 border-t border-[#2a1b12]/10 pt-5 text-sm text-ink/62">
-                  <p>India | INR Rs.</p>
-                  <Link onClick={closeMenu} href="/catalogue" className="luxury-button mt-4 inline-flex rounded-full bg-[#2a1b12] px-5 py-3 text-sm font-medium text-[#fffaf4]">
-                    Shop Signature Edit
-                  </Link>
-                </div>
-              </div>
+            <nav className="mt-4 border-b border-[#2a1b12]/10 sm:mt-7">
+              {primaryMenuLinks.map((item) => (
+                <Link
+                  key={item.label}
+                  onClick={closeMenu}
+                  href={item.href}
+                  className="menu-drawer-link group"
+                >
+                  <span>{item.label}</span>
+                  <ChevronRight className="h-6 w-6 shrink-0 transition duration-300 group-hover:translate-x-1 sm:h-9 sm:w-9" strokeWidth={1.35} />
+                </Link>
+              ))}
+            </nav>
+
+            <nav className="pt-4 sm:pt-7">
+              {secondaryMenuLinks.map((item) => (
+                <Link
+                  key={item.label}
+                  onClick={closeMenu}
+                  href={item.href}
+                  className="menu-drawer-link menu-drawer-link-secondary group"
+                >
+                  <span>{item.label}</span>
+                  <ChevronRight className="h-5 w-5 shrink-0 transition duration-300 group-hover:translate-x-1 sm:h-8 sm:w-8" strokeWidth={1.35} />
+                </Link>
+              ))}
+            </nav>
+
+            <div className="mt-6 border-t border-[#2a1b12]/10 pt-4 text-xs leading-6 text-[#7f5c38] sm:mt-10 sm:flex sm:items-center sm:justify-between sm:pt-6 sm:text-sm">
+              <p>India | INR Rs.</p>
+              <p className="mt-2 sm:mt-0">Luxury Gifting, Wedding Favours, And Custom Hampers</p>
             </div>
           </div>
         </div>

@@ -6,7 +6,6 @@ type BrandLogoProps = {
   size?: "sm" | "md" | "lg" | "xl";
   showText?: boolean;
   invert?: boolean;
-  framed?: boolean;
 };
 
 const imageSizes = {
@@ -16,14 +15,10 @@ const imageSizes = {
   xl: "h-20 w-20 sm:h-28 sm:w-28",
 };
 
-export function BrandLogo({ href = "/", size = "md", showText = true, invert = false, framed = true }: BrandLogoProps) {
+export function BrandLogo({ href = "/", size = "md", showText = true, invert = false }: BrandLogoProps) {
   const content = (
     <span className="inline-flex items-center gap-3">
-      <span
-        className={`relative block shrink-0 overflow-hidden rounded-full ${
-          framed ? "border border-ink/10 bg-[#efe1d2] shadow-[0_8px_22px_rgba(31,23,19,0.10)]" : ""
-        } ${imageSizes[size]}`}
-      >
+      <span className={`relative block shrink-0 overflow-hidden ${imageSizes[size]}`}>
         <Image
           src="/brand/moments-by-isha-logo.png"
           alt="Moments By Isha logo"

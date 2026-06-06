@@ -147,7 +147,7 @@ export default async function HomePage() {
                 Gifting, Favours, And Hampers With A Handmade Heart.
               </h2>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-4">
               {occasions.map((occasion, index) => {
                 const product = imageFor(displayProducts, index);
                 return (
@@ -158,16 +158,16 @@ export default async function HomePage() {
                           src={product.image_url}
                           alt={occasion.title}
                           fill
-                          sizes="(min-width: 1280px) 24vw, (min-width: 768px) 45vw, 92vw"
+                          sizes="(min-width: 1280px) 24vw, (min-width: 768px) 45vw, 46vw"
                           className="object-cover object-center brightness-[1.05] contrast-[0.92] saturate-[0.78] sepia-[0.16] transition duration-700 group-hover:scale-[1.045]"
                         />
                       ) : null}
                       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,244,0.04),rgba(42,27,18,0.34))]" />
                     </div>
-                    <div className="p-5">
-                      <h3 className="serif-title text-2xl font-semibold">{occasion.title}</h3>
-                      <p className="mt-3 min-h-20 text-sm leading-6 text-ink/62">{occasion.text}</p>
-                      <span className="button-line mt-4 inline-block text-xs tracking-[0.08em]">Explore</span>
+                    <div className="p-3 sm:p-5">
+                      <h3 className="serif-title text-lg font-semibold leading-tight sm:text-2xl">{occasion.title}</h3>
+                      <p className="mt-2 line-clamp-3 min-h-14 text-[11px] leading-5 text-ink/62 sm:mt-3 sm:min-h-20 sm:text-sm sm:leading-6">{occasion.text}</p>
+                      <span className="button-line mt-3 inline-block text-[10px] tracking-[0.08em] sm:mt-4 sm:text-xs">Explore</span>
                     </div>
                   </Link>
                 );
@@ -231,7 +231,7 @@ export default async function HomePage() {
                 premium, and ready for gifting.
               </p>
             </div>
-            <div className="grid gap-4 md:grid-cols-4 md:grid-rows-[260px_260px]">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4 md:grid-rows-[260px_260px]">
               {galleryProducts.slice(0, 5).map((product, index) => (
                 <Link
                   key={product.id}
@@ -244,13 +244,13 @@ export default async function HomePage() {
                     src={product.image_url}
                     alt={product.name}
                     fill
-                    sizes={index === 0 ? "(min-width: 768px) 48vw, 92vw" : "(min-width: 768px) 24vw, 92vw"}
+                    sizes={index === 0 ? "(min-width: 768px) 48vw, 46vw" : "(min-width: 768px) 24vw, 46vw"}
                     className="object-cover object-center brightness-[1.05] contrast-[0.9] saturate-[0.76] sepia-[0.16] transition duration-700 group-hover:scale-[1.045]"
                   />
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,250,244,0.08),rgba(42,27,18,0.38))]" />
-                  <div className="absolute bottom-4 left-4 right-4 text-porcelain">
-                    <p className="text-xs uppercase tracking-[0.18em] text-porcelain/72">{product.categories?.name ? toTitleCase(product.categories.name) : "Moments"}</p>
-                    <h3 className="serif-title mt-1 text-2xl font-semibold leading-none">{product.name}</h3>
+                  <div className="absolute bottom-3 left-3 right-3 text-porcelain sm:bottom-4 sm:left-4 sm:right-4">
+                    <p className="text-[9px] uppercase tracking-[0.14em] text-porcelain/72 sm:text-xs sm:tracking-[0.18em]">{product.categories?.name ? toTitleCase(product.categories.name) : "Moments"}</p>
+                    <h3 className="serif-title mt-1 text-lg font-semibold leading-none sm:text-2xl">{product.name}</h3>
                   </div>
                 </Link>
               ))}
@@ -307,18 +307,18 @@ export default async function HomePage() {
               ))}
             </div>
 
-            <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-3">
               {testimonials.map((testimonial) => (
-                <article key={testimonial.name} className="luxury-card border border-ink/10 bg-white p-6 shadow-[0_18px_45px_rgba(42,27,18,0.06)]">
+                <article key={testimonial.name} className="luxury-card border border-ink/10 bg-white p-3 shadow-[0_18px_45px_rgba(42,27,18,0.06)] sm:p-6">
                   <div className="flex gap-1 text-[#b98d5d]" aria-label="5 star review">
                     {Array.from({ length: 5 }).map((_, index) => (
-                      <Star key={index} size={15} fill="currentColor" strokeWidth={1.5} />
+                      <Star key={index} className="h-3 w-3 sm:h-[15px] sm:w-[15px]" fill="currentColor" strokeWidth={1.5} />
                     ))}
                   </div>
-                  <p className="mt-5 min-h-24 text-sm leading-7 text-ink/68">"{testimonial.quote}"</p>
-                  <div className="mt-5 border-t border-ink/10 pt-4">
-                    <p className="font-medium text-ink">- {testimonial.name}</p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.14em] text-clay">{testimonial.context}</p>
+                  <p className="mt-3 line-clamp-5 min-h-24 text-[11px] leading-5 text-ink/68 sm:mt-5 sm:min-h-24 sm:text-sm sm:leading-7">"{testimonial.quote}"</p>
+                  <div className="mt-3 border-t border-ink/10 pt-3 sm:mt-5 sm:pt-4">
+                    <p className="text-xs font-medium text-ink sm:text-base">- {testimonial.name}</p>
+                    <p className="mt-1 text-[9px] uppercase tracking-[0.12em] text-clay sm:text-xs sm:tracking-[0.14em]">{testimonial.context}</p>
                   </div>
                 </article>
               ))}

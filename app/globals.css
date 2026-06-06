@@ -222,6 +222,32 @@ select {
   transform: translateX(0.2rem);
 }
 
+.menu-drawer-link {
+  display: flex;
+  min-height: clamp(3.2rem, 5.4vw, 5.2rem);
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-top: 1px solid rgba(42, 27, 18, 0.08);
+  color: var(--brand-ink);
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 3.9vw, 2.7rem);
+  font-weight: 600;
+  line-height: 1.08;
+  transition: color 260ms ease, padding-left 260ms ease, background-color 260ms ease;
+}
+
+.menu-drawer-link:hover {
+  color: #8d613a;
+  padding-left: 0.35rem;
+  background-color: rgba(244, 234, 220, 0.42);
+}
+
+.menu-drawer-link-secondary {
+  min-height: clamp(2.75rem, 4.5vw, 4rem);
+  font-size: clamp(1.2rem, 2.9vw, 2rem);
+}
+
 @media (max-width: 640px) {
   .luxury-container {
     width: min(100% - 24px, 1280px);
@@ -229,6 +255,16 @@ select {
 
   .product-image-frame {
     border-radius: 1.65rem;
+  }
+
+  .menu-drawer-link {
+    min-height: 3.2rem;
+    font-size: clamp(1.4rem, 6.6vw, 1.76rem);
+  }
+
+  .menu-drawer-link-secondary {
+    min-height: 2.8rem;
+    font-size: clamp(1.08rem, 4.8vw, 1.32rem);
   }
 }
 
