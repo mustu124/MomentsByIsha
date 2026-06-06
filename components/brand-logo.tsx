@@ -26,7 +26,7 @@ export function BrandLogo({ href = "/", size = "md", showText = true, invert = f
       >
         <Image
           src="/brand/moments-by-isha-logo.png"
-          alt="Moments by Isha logo"
+          alt="Moments By Isha logo"
           fill
           sizes={size === "xl" ? "112px" : size === "lg" ? "80px" : size === "md" ? "64px" : "40px"}
           className="h-full w-full object-cover"
@@ -35,7 +35,7 @@ export function BrandLogo({ href = "/", size = "md", showText = true, invert = f
       </span>
       {showText ? (
         <span className={`serif-title leading-none ${invert ? "text-porcelain" : "text-ink"} ${size === "sm" ? "text-2xl" : "text-3xl"}`}>
-          Moments by Isha
+          Moments By Isha
         </span>
       ) : null}
     </span>

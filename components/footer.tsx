@@ -19,7 +19,8 @@ export function Footer({ settings }: { settings: SiteSettings }) {
           <p className="text-xs uppercase tracking-[0.2em] text-porcelain">Explore</p>
           <Link className="block" href="/catalogue">Catalogue</Link>
           <Link className="block" href="/#collections">Collections</Link>
-          <Link className="block" href="/#story">Brand story</Link>
+          <Link className="block" href="/#gifting">Gifting</Link>
+          <Link className="block" href="/about">About Isha</Link>
         </nav>
         <div className="space-y-4 text-sm text-porcelain/72">
           <p className="text-xs uppercase tracking-[0.2em] text-porcelain">Connect</p>
@@ -36,7 +37,7 @@ export function Footer({ settings }: { settings: SiteSettings }) {
             rel="noreferrer"
             className="inline-flex rounded-full border border-porcelain/24 px-5 py-2 text-porcelain transition hover:bg-porcelain hover:text-ink"
           >
-            start an order
+            Start An Order
           </a>
         </div>
       </div>

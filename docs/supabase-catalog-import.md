@@ -60,7 +60,7 @@ npm run catalog:import
 Or sign in as the Supabase admin user:
 
 ```powershell
-$env:SUPABASE_ADMIN_EMAIL="admin@forver.com"
+$env:SUPABASE_ADMIN_EMAIL="admin@forever.com"
 $env:SUPABASE_ADMIN_PASSWORD="isha1212"
 npm run catalog:import
 ```

@@ -5,6 +5,7 @@ create table if not exists public.categories (
   name text not null,
   slug text unique not null,
   description text,
+  parent_id uuid references public.categories(id) on delete set null,
   sort_order integer default 0,
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone default now()
@@ -51,7 +52,7 @@ returns boolean as $$
 begin
   return coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin'
     or coalesce(auth.jwt() -> 'user_metadata' ->> 'role', '') = 'admin'
-    or auth.email() in ('admin@forver.com', 'admin@forver');
+    or auth.email() in ('admin@forever.com', 'admin@forever', 'admin@forver.com', 'admin@forver');
 end;
 $$ language plpgsql stable security definer;
 

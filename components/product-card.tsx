@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ProductActions } from "@/components/product-actions";
 import { ProductImage } from "@/components/product-image";
+import { toTitleCase } from "@/lib/display-text";
 import type { Product, SiteSettings } from "@/lib/types";
 
 export function ProductCard({ product, settings }: { product: Product; settings: SiteSettings }) {
@@ -15,8 +16,8 @@ export function ProductCard({ product, settings }: { product: Product; settings:
             variant="card"
           />
           {product.is_featured ? (
-            <span className="absolute left-3 top-3 rounded-full bg-[#fffaf4]/92 px-3 py-1 text-[10px] lowercase tracking-[0.08em] text-ink shadow-[0_8px_18px_rgba(42,27,18,0.08)] sm:text-[11px]">
-              bestseller
+            <span className="absolute left-3 top-3 rounded-full bg-[#fffaf4]/92 px-3 py-1 text-[10px] tracking-[0.08em] text-ink shadow-[0_8px_18px_rgba(42,27,18,0.08)] sm:text-[11px]">
+              Bestseller
             </span>
           ) : null}
         </div>
@@ -24,7 +25,7 @@ export function ProductCard({ product, settings }: { product: Product; settings:
       <div className="flex flex-1 flex-col pt-3 sm:pt-5">
         <div className="grid min-h-[72px] grid-cols-[1fr_auto] items-start gap-2 sm:min-h-[82px] sm:gap-3 lg:min-h-[76px]">
           <div className="min-w-0">
-            <p className="text-[10px] uppercase tracking-[0.14em] text-taupe sm:text-[11px]">{product.categories?.name || "Aroma"}</p>
+            <p className="text-[10px] uppercase tracking-[0.14em] text-taupe sm:text-[11px]">{product.categories?.name ? toTitleCase(product.categories.name) : "Aroma"}</p>
             <Link href={`/products/${product.slug}`} className="mt-1 block text-[13px] font-semibold uppercase leading-snug sm:text-[15px] xl:text-base">{product.name}</Link>
           </div>
           {product.price ? <p className="whitespace-nowrap text-xs font-semibold leading-5 sm:text-sm">{product.price}</p> : null}

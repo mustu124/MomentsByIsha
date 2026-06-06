@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { LogIn } from "lucide-react";
 import { BrandLogo } from "@/components/brand-logo";
+import { clearAdminSession, getSafeAdminSession } from "@/lib/admin-session";
 import { hasSupabaseConfig, supabase } from "@/lib/supabase";
 
 export default function AdminLoginPage() {
@@ -30,7 +31,7 @@ function AdminLoginForm() {
       return;
     }
     setIsLoading(true);
-    await supabase.auth.signOut();
+    await clearAdminSession();
     const cleanedEmail = email.trim().toLowerCase();
     const { data, error } = await supabase.auth.signInWithPassword({ email: cleanedEmail, password: password.trim() });
     if (data.session) {
@@ -39,13 +40,13 @@ function AdminLoginForm() {
         refresh_token: data.session.refresh_token,
       });
     }
-    const { data: persistedSession } = await supabase.auth.getSession();
+    const persistedSession = await getSafeAdminSession();
     setIsLoading(false);
     if (error) {
       setMessage(error.message);
       return;
     }
-    if (!persistedSession.session) {
+    if (!persistedSession) {
       setMessage("Login succeeded, but the browser could not save the session. Clear the session and try once more.");
       return;
     }
@@ -55,12 +56,7 @@ function AdminLoginForm() {
   async function clearSession() {
     setMessage("");
     setPassword("");
-    if (hasSupabaseConfig && supabase) await supabase.auth.signOut();
-    if (typeof window !== "undefined") {
-      Object.keys(window.localStorage)
-        .filter((key) => key.includes("supabase") || key.startsWith("sb-"))
-        .forEach((key) => window.localStorage.removeItem(key));
-    }
+    await clearAdminSession();
     setMessage("Saved session cleared. Please log in again.");
   }
 

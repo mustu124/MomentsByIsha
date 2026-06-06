@@ -8,6 +8,7 @@ import { ProductImage } from "@/components/product-image";
 import { ProductCard } from "@/components/product-card";
 import { SiteHeader } from "@/components/site-header";
 import { getProductBySlug, getProducts, getSiteSettings } from "@/lib/data";
+import { toTitleCase } from "@/lib/display-text";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -23,9 +24,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     <>
       <SiteHeader />
       <main className="luxury-container pb-24 pt-6 sm:pt-8 sm:pb-8">
-        <Link href="/catalogue" className="button-line mb-8 inline-flex items-center gap-2 text-sm lowercase text-ink/70">
+        <Link href="/catalogue" className="button-line mb-8 inline-flex items-center gap-2 text-sm text-ink/70">
           <ArrowLeft size={16} />
-          back to catalogue
+          Back To Catalogue
         </Link>
         <section className="grid gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(360px,0.72fr)] lg:items-start lg:gap-12">
           <div>
@@ -47,24 +48,24 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             ) : null}
           </div>
           <div className="flex flex-col justify-center">
-            <p className="text-xs lowercase tracking-[0.08em] text-taupe sm:text-sm">{product.categories?.name || "Moments by Isha"}</p>
-            <h1 className="serif-title mt-3 text-4xl font-semibold leading-none lowercase sm:text-6xl md:text-7xl">{product.name}</h1>
+            <p className="text-xs tracking-[0.08em] text-taupe sm:text-sm">{product.categories?.name ? toTitleCase(product.categories.name) : "Moments By Isha"}</p>
+            <h1 className="serif-title mt-3 text-4xl font-semibold leading-none sm:text-6xl md:text-7xl">{product.name}</h1>
             <p className="mt-4 text-sm text-ink/54">5.0 / 5.0</p>
             <p className="mt-5 text-2xl font-semibold">{product.price}</p>
             <p className="mt-6 max-w-xl text-base leading-8 text-ink/70">{product.description}</p>
             <div className="mt-8 max-w-sm">
               <ProductActions product={product} settings={settings} />
             </div>
-            <div className="mt-8 grid max-w-xl gap-3 border-y border-ink/10 py-5 text-sm lowercase leading-6 text-ink/60 sm:grid-cols-3">
-              <p>whatsapp order</p>
-              <p>gift-ready finish</p>
-              <p>small batch aroma</p>
+            <div className="mt-8 grid max-w-xl gap-3 border-y border-ink/10 py-5 text-sm leading-6 text-ink/60 sm:grid-cols-3">
+              <p>WhatsApp Order</p>
+              <p>Gift-Ready Finish</p>
+              <p>Small Batch Aroma</p>
             </div>
           </div>
         </section>
         {related.length ? (
           <section className="py-14">
-            <p className="text-xs uppercase tracking-[0.22em] text-taupe">You may also like</p>
+            <p className="text-xs uppercase tracking-[0.22em] text-taupe">You May Also Like</p>
             <div className="mt-6 grid grid-cols-2 items-stretch gap-x-4 gap-y-10 sm:gap-x-5 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 min-[1800px]:grid-cols-6">
               {related.map((item) => <ProductCard key={item.id} product={item} settings={settings} />)}
             </div>

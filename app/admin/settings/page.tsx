@@ -6,8 +6,8 @@ import { AdminCard } from "@/components/admin/admin-card";
 import { AdminGuard } from "@/components/admin/admin-guard";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { fetchAdminSettings } from "@/lib/admin-data";
+import { getSafeAdminAccessToken } from "@/lib/admin-session";
 import { demoSettings } from "@/lib/demo-data";
-import { supabase } from "@/lib/supabase";
 import type { SiteSettings } from "@/lib/types";
 
 export default function SettingsPage() {
@@ -24,22 +24,34 @@ export default function SettingsPage() {
 
   async function saveSettings(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!supabase) return;
     setIsSaving(true);
     setNotice("");
 
-    const settingsId = settings.id || crypto.randomUUID();
-    const result = settings.id
-      ? await supabase.from("site_settings").update(settings, { count: "exact" }).eq("id", settings.id)
-      : await supabase.from("site_settings").insert({ ...settings, id: settingsId }, { count: "exact" });
-
-    setIsSaving(false);
-    if (result.error) {
-      setNotice(result.error.message);
+    const accessToken = await getSafeAdminAccessToken();
+    if (!accessToken) {
+      setIsSaving(false);
+      setNotice("Please log in again.");
       return;
     }
 
-    const { settings: savedSettings } = await fetchAdminSettings();
+    const settingsId = settings.id || crypto.randomUUID();
+    const response = await fetch("/api/admin/settings", {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...settings, id: settingsId }),
+    });
+    const result = await response.json();
+
+    setIsSaving(false);
+    if (!response.ok) {
+      setNotice(result.error || "Settings were not saved.");
+      return;
+    }
+
+    const savedSettings = result.settings || (await fetchAdminSettings()).settings;
     if (savedSettings) setSettings({ ...demoSettings, ...savedSettings });
     setNotice("Settings saved. Public site will reflect this immediately.");
   }

@@ -74,7 +74,7 @@ export function AddToCartButton({ product, selectedSize = "" }: { product: Produ
           >
             <Minus size={15} />
           </button>
-          <div className="grid place-items-center text-sm font-semibold lowercase">
+          <div className="grid place-items-center text-sm font-semibold">
             {addedQuantity}
           </div>
           <button
@@ -89,13 +89,13 @@ export function AddToCartButton({ product, selectedSize = "" }: { product: Produ
       ) : (
         <button
           onClick={addToCart}
-          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-ink/18 bg-[#fffaf4]/70 px-3 text-[11px] font-medium lowercase tracking-[0.03em] text-ink transition hover:bg-[#f4eadc] sm:px-4 sm:text-sm"
+          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full border border-ink/18 bg-[#fffaf4]/70 px-3 text-[11px] font-medium tracking-[0.03em] text-ink transition hover:bg-[#f4eadc] sm:px-4 sm:text-sm"
         >
           <ShoppingBag size={16} />
-          add to order
+          Add To Order
         </button>
       )}
-      <div className="h-5 pt-1 text-center text-[10px] lowercase leading-4 text-ink/50">
+      <div className="h-5 pt-1 text-center text-[10px] leading-4 text-ink/50">
         {selectedSize || ""}
       </div>
     </div>

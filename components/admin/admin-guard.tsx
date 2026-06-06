@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { getSafeAdminSession } from "@/lib/admin-session";
 import { hasSupabaseConfig, supabase } from "@/lib/supabase";
 
 export function AdminGuard({ children }: { children: React.ReactNode }) {
@@ -19,13 +20,12 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      const client = supabase;
-      const { data } = await client.auth.getSession();
-      if (!data.session) {
+      const session = await getSafeAdminSession();
+      if (!session) {
         redirectTimer = setTimeout(async () => {
-          const { data: retryData } = await client.auth.getSession();
-          if (!retryData.session && isMounted) {
-            router.replace(`/admin/login?next=${encodeURIComponent(pathname)}`);
+          const retrySession = await getSafeAdminSession();
+          if (!retrySession && isMounted) {
+            router.replace(`/admin/login?next=${encodeURIComponent(pathname)}&message=admin-required`);
           }
         }, 700);
         return;

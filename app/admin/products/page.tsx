@@ -8,6 +8,7 @@ import { AdminGuard } from "@/components/admin/admin-guard";
 import { AdminShell } from "@/components/admin/admin-shell";
 import { ProductImage } from "@/components/product-image";
 import { fetchAdminProducts } from "@/lib/admin-data";
+import { getSafeAdminAccessToken } from "@/lib/admin-session";
 import { supabase } from "@/lib/supabase";
 import type { Product } from "@/lib/types";
 
@@ -27,8 +28,7 @@ export default function ProductsPage() {
 
   async function deleteProduct(product: Product) {
     if (!supabase || !window.confirm(`Delete ${product.name}?`)) return;
-    const sessionResult = await supabase.auth.getSession();
-    const accessToken = sessionResult.data.session?.access_token;
+    const accessToken = await getSafeAdminAccessToken();
     if (!accessToken) {
       setNotice("Please log in again.");
       return;

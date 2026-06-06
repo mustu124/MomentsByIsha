@@ -6,6 +6,7 @@ export const demoCategories: Category[] = [
     name: "Wax Sachets",
     slug: "wax-sachets",
     description: "Handcrafted wax sachets for wardrobes, drawers, cars, bags, and closed spaces.",
+    parent_id: null,
     sort_order: 1,
   },
   {
@@ -13,6 +14,7 @@ export const demoCategories: Category[] = [
     name: "Candles",
     slug: "candles",
     description: "Hand-poured candles crafted for a slow, clean, aesthetic burn.",
+    parent_id: null,
     sort_order: 2,
   },
 ];

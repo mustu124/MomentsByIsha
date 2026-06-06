@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, Boxes, FolderTree, LogOut, Settings } from "lucide-react";
 import { BrandLogo } from "@/components/brand-logo";
-import { supabase } from "@/lib/supabase";
+import { clearAdminSession } from "@/lib/admin-session";
 
 const navItems = [
   { href: "/admin/dashboard", label: "Dashboard", icon: BarChart3 },
@@ -17,7 +17,7 @@ export function AdminShell({ title, children, action }: { title: string; childre
   const pathname = usePathname();
 
   async function signOut() {
-    await supabase?.auth.signOut();
+    await clearAdminSession();
     window.location.href = "/admin/login";
   }
 
@@ -27,7 +27,7 @@ export function AdminShell({ title, children, action }: { title: string; childre
         <div className="flex h-24 items-center gap-4 border-b border-ink/10 px-7">
           <BrandLogo size="md" showText={false} />
           <div>
-            <p className="text-lg font-semibold">Moments by Isha</p>
+            <p className="text-lg font-semibold">Moments By Isha</p>
             <p className="text-sm text-ink/52">Admin</p>
           </div>
         </div>
@@ -54,7 +54,7 @@ export function AdminShell({ title, children, action }: { title: string; childre
         <header className="sticky top-0 z-30 border-b border-ink/10 bg-[#f7f1ea]/90 backdrop-blur">
           <div className="flex min-h-24 items-center justify-between gap-4 px-5 sm:px-7 lg:px-10">
             <div className="min-w-0">
-              <p className="text-sm uppercase tracking-[0.16em] text-ink/48">Admin panel</p>
+              <p className="text-sm uppercase tracking-[0.16em] text-ink/48">Admin Panel</p>
               <h1 className="truncate text-2xl font-semibold sm:text-3xl">{title}</h1>
             </div>
             <div className="flex shrink-0 items-center gap-2">

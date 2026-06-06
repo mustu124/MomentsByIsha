@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ImagePlus, Save, Trash2, Upload } from "lucide-react";
 import { ProductImage } from "@/components/product-image";
 import { fetchAdminCategories } from "@/lib/admin-data";
+import { getSafeAdminAccessToken } from "@/lib/admin-session";
 import { slugify } from "@/lib/data";
 import { supabase } from "@/lib/supabase";
 import type { Category, Product } from "@/lib/types";
@@ -70,10 +71,14 @@ export function ProductForm({ product }: { product?: Product | null }) {
     setDraft((current) => ({ ...current, [key]: value }));
   }
 
+  function categoryLabel(category: Category) {
+    const parent = categories.find((item) => item.id === category.parent_id);
+    return parent ? `${parent.name} / ${category.name}` : category.name;
+  }
+
   async function uploadFile(file: File) {
     if (!supabase) return;
-    const sessionResult = await supabase.auth.getSession();
-    const accessToken = sessionResult.data.session?.access_token;
+    const accessToken = await getSafeAdminAccessToken();
     if (!accessToken) {
       setNotice("Please log in again.");
       return "";
@@ -158,8 +163,7 @@ export function ProductForm({ product }: { product?: Product | null }) {
     const { size_ml: _sizeMl, ...payloadWithoutSize } = payloadWithSize;
 
     const productId = product?.id || crypto.randomUUID();
-    const sessionResult = await supabase.auth.getSession();
-    const accessToken = sessionResult.data.session?.access_token;
+    const accessToken = await getSafeAdminAccessToken();
     if (!accessToken) {
       setIsSaving(false);
       setNotice("Please log in again.");
@@ -239,11 +243,14 @@ export function ProductForm({ product }: { product?: Product | null }) {
                 className="mt-2 w-full rounded-md border border-ink/12 bg-white px-4 py-3.5 text-base outline-none focus:border-ink"
               >
                 <option value="">Uncategorized</option>
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
+                {categories
+                  .slice()
+                  .sort((a, b) => categoryLabel(a).localeCompare(categoryLabel(b)))
+                  .map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {categoryLabel(category)}
+                    </option>
+                  ))}
               </select>
             </label>
           </div>
