@@ -111,14 +111,6 @@ select {
   animation: luxury-shimmer 8s ease-in-out infinite alternate;
 }
 
-.site-menu-panel {
-  display: none;
-}
-
-.site-menu-toggle:checked ~ .site-menu-panel {
-  display: block;
-}
-
 .offer-marquee {
   display: flex;
   min-width: 0;

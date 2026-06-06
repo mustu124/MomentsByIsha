@@ -33,21 +33,16 @@ export function SiteHeader() {
   }
 
   function closeMenu() {
-    const toggle = document.getElementById("site-menu-toggle") as HTMLInputElement | null;
-    if (toggle) toggle.checked = false;
     setIsMenuOpen(false);
   }
 
   function openMenu() {
-    const toggle = document.getElementById("site-menu-toggle") as HTMLInputElement | null;
-    if (toggle) toggle.checked = true;
     setIsSearchOpen(false);
     setIsMenuOpen(true);
   }
 
   return (
     <>
-      <input id="site-menu-toggle" className="site-menu-toggle sr-only" type="checkbox" aria-hidden="true" />
       <header className="relative z-[90] border-b border-[#2a1b12]/10 bg-[#fffaf4]">
         <div className="relative overflow-hidden border-b border-[#2a1b12]/10 bg-[#d8b994] py-3 text-[#2a1b12] sm:py-4">
           <div className="luxury-container flex items-center justify-between gap-3">
@@ -85,21 +80,16 @@ export function SiteHeader() {
           </Link>
 
           <div className="flex shrink-0 items-center justify-end gap-0.5 sm:gap-2">
-            <label
-              role="button"
-              tabIndex={0}
-              htmlFor="site-menu-toggle"
+            <button
+              type="button"
               className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#f4eadc] text-[#2a1b12] transition hover:bg-[#ead4bd] sm:h-16 sm:w-16"
               aria-label="Open menu"
               aria-expanded={isMenuOpen}
               aria-controls="site-menu"
               onClick={openMenu}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") openMenu();
-              }}
             >
               <Menu className="h-7 w-7 sm:h-9 sm:w-9" strokeWidth={1.55} />
-            </label>
+            </button>
             <button
               type="button"
               className="inline-flex h-12 w-12 items-center justify-center rounded-full text-[#2a1b12] transition hover:bg-[#f4eadc] sm:h-16 sm:w-16"
@@ -144,7 +134,8 @@ export function SiteHeader() {
         ) : null}
       </header>
 
-      <div id="site-menu" className="site-menu-panel fixed inset-0 z-[999] overflow-y-auto bg-[#fffaf4] text-[#2a1b12]" role="dialog" aria-modal="true" aria-label="Site menu">
+      {isMenuOpen ? (
+        <div id="site-menu" className="fixed inset-0 z-[999] overflow-y-auto bg-[#fffaf4] text-[#2a1b12]" role="dialog" aria-modal="true" aria-label="Site menu">
           <div className="luxury-shine pointer-events-none absolute inset-0 opacity-40" />
           <div className="luxury-container relative py-5 sm:py-7">
             <div className="flex items-center justify-between gap-4 border-b border-[#2a1b12]/10 pb-5">
@@ -157,19 +148,14 @@ export function SiteHeader() {
                   <span className="mt-1 block text-xs uppercase tracking-[0.28em] text-[#7f5c38]">By Isha</span>
                 </span>
               </Link>
-              <label
-                role="button"
-                tabIndex={0}
-                htmlFor="site-menu-toggle"
+              <button
+                type="button"
                 onClick={closeMenu}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") closeMenu();
-                }}
                 className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-[#2a1b12]/12 bg-white text-[#2a1b12] shadow-[0_10px_24px_rgba(42,27,18,0.08)]"
                 aria-label="Close menu"
               >
                 <X className="h-6 w-6" strokeWidth={1.5} />
-              </label>
+              </button>
             </div>
 
             <div className="grid gap-8 py-8 sm:py-10 lg:grid-cols-[1fr_0.72fr] lg:gap-14">
@@ -220,6 +206,7 @@ export function SiteHeader() {
             </div>
           </div>
         </div>
+      ) : null}
     </>
   );
 }
