@@ -25,6 +25,10 @@ export const demoSettings: SiteSettings = {
   whatsapp_message_template: "Hi, I want to order {{product_name}} from Moments by Isha.",
   contact_email: "hello@momentsbyisha.com",
   instagram_url: "https://instagram.com/shah_artisans.aroma",
+  home_hero_image_url: "",
+  home_story_image_url: "",
+  about_hero_image_url: "",
+  about_founder_image_url: "",
 };
 
 const images = [

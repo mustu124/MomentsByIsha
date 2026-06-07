@@ -34,4 +34,8 @@ export type SiteSettings = {
   whatsapp_message_template: string;
   contact_email: string;
   instagram_url: string;
+  home_hero_image_url?: string | null;
+  home_story_image_url?: string | null;
+  about_hero_image_url?: string | null;
+  about_founder_image_url?: string | null;
 };

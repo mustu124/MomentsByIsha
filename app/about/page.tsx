@@ -29,8 +29,9 @@ const principles = [
 
 export default async function AboutPage() {
   const [products, settings] = await Promise.all([getProducts(), getSiteSettings()]);
-  const heroImage = products[0]?.image_url;
+  const heroImage = settings.about_hero_image_url || products[0]?.image_url;
   const detailImage = products[1]?.image_url || heroImage;
+  const founderImage = settings.about_founder_image_url || "/brand/isha-profile.jpg";
   const phone = (settings.whatsapp_number || "").replace(/[^\d]/g, "");
   const message = encodeURIComponent("Hi, I would like to know more about Moments by Isha and custom gifting options.");
 
@@ -65,7 +66,7 @@ export default async function AboutPage() {
             <div className="luxury-image-panel relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden border border-porcelain/16 bg-[#ead4bd] p-2 shadow-[0_28px_80px_rgba(0,0,0,0.28)]">
               <div className="relative h-full w-full overflow-hidden">
                 <Image
-                  src="/brand/isha-profile.jpg"
+                  src={founderImage}
                   alt="Isha, founder of Moments By Isha"
                   fill
                   sizes="360px"

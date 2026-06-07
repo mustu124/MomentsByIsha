@@ -90,6 +90,8 @@ export default async function HomePage() {
   const displayProducts = featured.length ? featured : products;
   const heroProduct = displayProducts[0] || products[0];
   const storyProduct = imageFor(displayProducts, 1);
+  const heroImageUrl = settings.home_hero_image_url || heroProduct?.image_url || "";
+  const storyImageUrl = settings.home_story_image_url || storyProduct?.image_url || "";
   const galleryProducts = displayProducts.length ? displayProducts.slice(0, 6) : products.slice(0, 6);
   const giftingMessage = "Hi, I would like to discuss gifting, wedding favours, corporate gifting, or custom hampers with Moments by Isha.";
 
@@ -98,10 +100,10 @@ export default async function HomePage() {
       <SiteHeader />
       <main>
         <section className="relative isolate min-h-[760px] overflow-hidden bg-ink text-porcelain sm:min-h-[780px]">
-          {heroProduct?.image_url ? (
+          {heroImageUrl ? (
             <Image
-              src={heroProduct.image_url}
-              alt={`${heroProduct.name} by Moments by Isha`}
+              src={heroImageUrl}
+              alt="Moments By Isha homepage banner"
               fill
               priority
               sizes="100vw"
@@ -179,9 +181,9 @@ export default async function HomePage() {
         <section className="bg-[#f4eadc] py-14">
           <div className="luxury-container grid gap-8 lg:grid-cols-[minmax(0,0.95fr)_minmax(360px,0.75fr)] lg:items-center">
             <div className="luxury-image-panel relative min-h-[520px] overflow-hidden bg-[#dfc3a4] shadow-[0_20px_60px_rgba(42,27,18,0.10)]">
-              {storyProduct?.image_url ? (
+              {storyImageUrl ? (
                 <Image
-                  src={storyProduct.image_url}
+                  src={storyImageUrl}
                   alt="Moments By Isha luxury gifting detail"
                   fill
                   sizes="(min-width: 1024px) 55vw, 92vw"

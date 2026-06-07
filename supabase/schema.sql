@@ -35,6 +35,10 @@ create table if not exists public.site_settings (
   whatsapp_message_template text,
   contact_email text,
   instagram_url text,
+  home_hero_image_url text,
+  home_story_image_url text,
+  about_hero_image_url text,
+  about_founder_image_url text,
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone default now()
 );
