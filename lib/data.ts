@@ -4,13 +4,14 @@ import type { Category, Product, SiteSettings } from "@/lib/types";
 
 export async function getCategories(): Promise<Category[]> {
   if (!hasSupabaseConfig || !supabase) return demoCategories;
-  const { data, error } = await supabase.from("categories").select("*").order("sort_order", { ascending: true });
-  if (error) {
-    console.error("Supabase categories fetch failed:", error.message);
-    return [];
+  try {
+    const { data, error } = await supabase.from("categories").select("*").order("sort_order", { ascending: true });
+    if (error) return demoCategories;
+    if (!data?.length) return [];
+    return data;
+  } catch {
+    return demoCategories;
   }
-  if (!data?.length) return [];
-  return data;
 }
 
 export async function getProducts({ includeHidden = false } = {}): Promise<Product[]> {
@@ -25,13 +26,16 @@ export async function getProducts({ includeHidden = false } = {}): Promise<Produ
     .order("created_at", { ascending: false });
 
   if (!includeHidden) query = query.eq("is_visible", true);
-  const { data, error } = await query;
-  if (error) {
-    console.error("Supabase products fetch failed:", error.message);
-    return [];
+  try {
+    const { data, error } = await query;
+    if (error) {
+      return includeHidden ? demoProducts : demoProducts.filter((product) => product.is_visible);
+    }
+    if (!data?.length) return [];
+    return data.map((product) => ({ ...product, gallery_images: product.gallery_images || [] }));
+  } catch {
+    return includeHidden ? demoProducts : demoProducts.filter((product) => product.is_visible);
   }
-  if (!data?.length) return [];
-  return data.map((product) => ({ ...product, gallery_images: product.gallery_images || [] }));
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {

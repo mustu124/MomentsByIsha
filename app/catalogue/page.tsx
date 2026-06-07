@@ -17,6 +17,13 @@ export default async function CataloguePage({ searchParams }: { searchParams: Pr
   ]);
   const searchQuery = (q || "").trim().toLowerCase();
   const selectedCategoryRow = selectedCategory ? categories.find((category) => category.slug === selectedCategory) : null;
+  const selectedParentRow = selectedCategoryRow?.parent_id
+    ? categories.find((category) => category.id === selectedCategoryRow.parent_id) || null
+    : selectedCategoryRow;
+  const topLevelCategories = categories.filter((category) => !category.parent_id);
+  const visibleSubcategories = selectedParentRow
+    ? categories.filter((category) => category.parent_id === selectedParentRow.id)
+    : [];
   const selectedCategoryIds = selectedCategoryRow
     ? [selectedCategoryRow.id, ...categories.filter((category) => category.parent_id === selectedCategoryRow.id).map((category) => category.id)]
     : [];
@@ -54,15 +61,24 @@ export default async function CataloguePage({ searchParams }: { searchParams: Pr
         </section>
 
         <section className="luxury-container pb-24 pt-10 sm:pb-10">
-        <div className="mb-8 flex justify-start gap-2 overflow-x-auto border-b border-ink/10 pb-5 md:mb-10 md:justify-center">
-          <a href="/catalogue" className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs sm:px-5 sm:text-sm ${!selectedCategory ? "border-ink bg-ink text-porcelain" : "border-ink/14 bg-[#fffaf4]/70"}`}>All</a>
-          {categories.map((category) => {
-            const parent = category.parent_id ? categories.find((item) => item.id === category.parent_id) : null;
-            return (
-            <a key={category.id} href={`/catalogue?category=${category.slug}`} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs sm:px-5 sm:text-sm ${selectedCategory === category.slug ? "border-ink bg-ink text-porcelain" : "border-ink/14 bg-[#fffaf4]/70"}`}>
-              {toTitleCase(parent ? `${parent.name} / ${category.name}` : category.name)}
-            </a>
-          )})}
+        <div className="mb-8 space-y-3 border-b border-ink/10 pb-5 md:mb-10">
+          <div className="flex justify-start gap-2 overflow-x-auto md:justify-center">
+            <a href="/catalogue" className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs sm:px-5 sm:text-sm ${!selectedCategory ? "border-ink bg-ink text-porcelain" : "border-ink/14 bg-[#fffaf4]/70"}`}>All</a>
+            {topLevelCategories.map((category) => (
+              <a key={category.id} href={`/catalogue?category=${category.slug}`} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs sm:px-5 sm:text-sm ${selectedCategory === category.slug ? "border-ink bg-ink text-porcelain" : "border-ink/14 bg-[#fffaf4]/70"}`}>
+                {toTitleCase(category.name)}
+              </a>
+            ))}
+          </div>
+          {visibleSubcategories.length ? (
+            <div className="flex justify-start gap-2 overflow-x-auto md:justify-center">
+              {visibleSubcategories.map((category) => (
+                <a key={category.id} href={`/catalogue?category=${category.slug}`} className={`whitespace-nowrap rounded-full border px-4 py-2 text-xs sm:px-5 sm:text-sm ${selectedCategory === category.slug ? "border-ink bg-ink text-porcelain" : "border-ink/14 bg-[#fffaf4]/70"}`}>
+                  {toTitleCase(category.name)}
+                </a>
+              ))}
+            </div>
+          ) : null}
         </div>
         <section className="grid grid-cols-2 items-stretch gap-x-4 gap-y-10 sm:gap-x-5 sm:gap-y-12 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 min-[1800px]:grid-cols-6">
           {filtered.map((product) => <ProductCard key={product.id} product={product} settings={settings} />)}
